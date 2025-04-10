@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
   ]
 };
----------------------------------------------------------------------------------------------------------------------------
+------------------------main.ts---------------------------------------------------------------------------------------------------
 
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
@@ -22,3 +22,22 @@ import { AppComponent } from './app/app.component';
 bootstrapApplication(AppComponent, appConfig)
       .then(() => console.log('Angular Standalone Application Bootstraped'))
       .catch((err) => console.error(err));
+
+
+-------------------------------------------------appComponent.ts
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, CommonModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppComponent {
+  title = 'ibj57-ibp_riaapp_multisitess';
+}
+
