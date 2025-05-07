@@ -1,0 +1,45 @@
+function parseTemplate(template: string): Variable[] {
+  return template.match(/{{SAISIE;[^}]+}}/g)?.map((match) => {
+    const parts = match.replace(/{{|}}/g, "").split(";");
+    const [_, type, libelle, ...values] = parts;
+
+    switch (type) {
+      case "LISTE":
+        return {
+          original: match,
+          type: "LISTE",
+          libelle,
+          valeurs: values,
+        } as ListVariable;
+
+      case "LIBRE":
+        return {
+          original: match,
+          type: "LIBRE",
+          libelle,
+          defaultValue: values[0] || undefined,
+        } as LibreVariable;
+
+      case "DATE":
+      case "DATEANTERIEUR":
+        return {
+          original: match,
+          type,
+          libelle,
+        } as DateVariable;
+
+      default:
+        throw new Error(`Type inconnu: ${type}`);
+    }
+  }) || [];
+}
+
+// Exemple d'utilisation
+const template = `
+{{SAISIE;LISTE;Nom de la liste;Valeur1;Valeur2}}
+{{SAISIE;LIBRE;Champ libre;ValeurpardefaultOptionnel}}
+{{SAISIE;DATE;Date de naissance}}
+{{SAISIE;DATEANTERIEUR;Date antérieure}}
+`;
+
+console.log(parseTemplate(template));
