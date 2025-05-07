@@ -1,0 +1,65 @@
+l'extraction d'un template comprenant les variables suivantes
+
+{{SAISIE;LISTE;LIBELLE;Valeur1;Valeur2}}
+{{SAISIE;LIBRE;LIBELLE;ValeurpardefaultOptionnel}}
+{{SAISIE;DATE;LIBELLE}}
+{{SAISIE;DATEANTERIEUR;LIBELLE}} donne ce résultat
+
+[
+  {
+    "original": "{{SAISIE;LISTE;Nom de la liste;Valeur1;Valeur2}}",
+    "type": "LISTE",
+    "libelle": "Nom de la liste",
+    "valeurs": [
+      "Valeur1",
+      "Valeur2"
+    ]
+  },
+  {
+    "original": "{{SAISIE;LIBRE;Champ libre;ValeurpardefaultOptionnel}}",
+    "type": "LIBRE",
+    "libelle": "Champ libre",
+    "defaultValue": "ValeurpardefaultOptionnel"
+  },
+  {
+    "original": "{{SAISIE;DATE;Date de naissance}}",
+    "type": "DATE",
+    "libelle": "Date de naissance"
+  },
+  {
+    "original": "{{SAISIE;DATEANTERIEUR;Date antérieure}}",
+    "type": "DATEANTERIEUR",
+    "libelle": "Date antérieure"
+  }
+]
+
+fait un reverse ingeniering et retrouve la fonction typescript qui permet d'obtenir ce résultat
+
+voici les interfaces et les différents types 
+
+export interface BaseVariable {
+  original: string;
+  type: string;
+  libelle?: string;
+}
+
+export interface ListVariable extends BaseVariable {
+  type: 'LISTE';
+  libelle: string;
+  valeurs: string[];
+}
+
+export interface LibreVariable extends BaseVariable {
+  type: 'LIBRE';
+  libelle: string;
+  defaultValue?: string;
+}
+
+export interface DateVariable extends BaseVariable {
+  type: 'DATE' | 'DATEANTERIEUR';
+  libelle: string;
+}
+
+export type Variable = ListVariable | LibreVariable | DateVariable;
+
+tu utilisera à fond les potentialité typescript et les map si nécessaire
